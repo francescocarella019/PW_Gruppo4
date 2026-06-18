@@ -1,5 +1,5 @@
 package com.gruppo4.pw.repository;
 
-public class UtenteRepository {
-    
+public interface UtenteRepository extends CrudRepository<Utente, Long> {
+    Optional<Utente> findByEmail(String email);
 }
