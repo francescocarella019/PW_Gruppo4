@@ -1,10 +1,13 @@
 package com.gruppo4.pw.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
+
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "utenti")
+@Data
 public class Utente {
 
     @Id
