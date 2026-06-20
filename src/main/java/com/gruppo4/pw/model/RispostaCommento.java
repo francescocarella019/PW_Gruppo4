@@ -26,6 +26,4 @@ public class RispostaCommento {
     @JoinColumn(name = "id_utente")
     private Utente utente;
     
-    @Column(name = "id_utente")
-    private Long idUtente;
 }

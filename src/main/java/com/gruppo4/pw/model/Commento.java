@@ -9,7 +9,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -33,10 +32,8 @@ public class Commento {
     @Column(name = "data_commento")
     private LocalDate dataCommento;
 
-@ManyToOne
+    @ManyToOne
     @JoinColumn(name = "id_recensione")
     private Recensione recensione;
 
-    @OneToMany(mappedBy = "commento")
-    private Assegnazione assegnazione;
 }
