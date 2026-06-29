@@ -1,5 +1,10 @@
 package com.gruppo4.pw.repository;
 
-public class UtenteRepository {
-    
-}
+import java.util.Optional;
+
+import org.springframework.data.repository.CrudRepository;
+
+import com.gruppo4.pw.model.Utente;
+
+public interface UtenteRepository extends CrudRepository<Utente, Long> {
+    }
