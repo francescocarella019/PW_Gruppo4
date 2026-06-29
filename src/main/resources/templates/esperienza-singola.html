@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${recensione.esperienza.titolo}">Dettaglio Esperienza - Pugliamare</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .bg-pugliamare { background-color: #003366; }
+        .text-pugliamare { color: #003366; }
+        .border-pugliamare { border-color: #003366; }
+    </style>
+</head>
+<body class="bg-slate-50 font-sans text-slate-800">
+
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <nav class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <i class="fa-solid fa-water text-pugliamare text-2xl"></i>
+                <span class="text-xl font-bold text-pugliamare tracking-tight">Pugliamare</span>
+            </div>
+            <ul class="hidden md:flex items-center space-x-8 text-sm font-semibold text-slate-500 uppercase tracking-widest">
+                <li><a href="/explore" class="hover:text-pugliamare">Explore</a></li>
+                <li><a href="/forum" class="hover:text-pugliamare">Forum</a></li>
+                <li><a href="/reviews" class="text-pugliamare border-b-2 border-pugliamare pb-1">Reviews</a></li>
+            </ul>
+            <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center border border-slate-200">
+                <i class="fa-solid fa-user text-slate-400"></i>
+            </div>
+        </nav>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <div class="lg:col-span-2 space-y-8">
+                
+                <section class="relative h-[400px] rounded-3xl overflow-hidden shadow-2xl group">
+                    <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?q=80&w=1200" 
+                         alt="Copertina Esperienza" 
+                         class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                    
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                    
+                    <div class="absolute bottom-8 left-8 right-8 text-white">
+                        <div class="flex items-center space-x-2 bg-pugliamare/60 backdrop-blur-md w-fit px-3 py-1 rounded-full text-xs font-bold mb-4 border border-white/20">
+                            <i class="fa-solid fa-star text-amber-400"></i>
+                            <span th:text="${recensione.valutazione} + ' / 5 (Dettaglio Recensione)'">4.9 (128 Recensioni)</span>
+                        </div>
+                        <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight" th:text="${recensione.esperienza.titolo}">
+                            Tour in Barca alle Grotte di Polignano
+                        </h1>
+                        
+                        <div class="flex flex-wrap gap-4 mt-6">
+                            <button class="bg-pugliamare hover:bg-sky-900 text-white text-xs font-bold py-3 px-6 rounded-xl transition-all shadow-lg">
+                                Lascia un commento
+                            </button>
+                            <button class="bg-white/20 hover:bg-white/30 text-white text-xs font-bold py-3 px-6 rounded-xl border border-white/40 backdrop-blur-md transition-all">
+                                Fai una domanda
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 rounded-full bg-pugliamare text-white flex items-center justify-center font-bold text-lg" 
+                                 th:text="${#strings.substring(recensione.utente.nome,0,1)}">U</div>
+                            <div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="font-bold text-base" th:text="${recensione.utente.nome + ' ' + recensione.utente.cognome}">Nome Utente</span>
+                                    
+                                </div>
+                                <span class="text-xs text-slate-400 font-semibold" th:text="${recensione.data}">Data</span>
+                            </div>
+                        </div>
+                        <div class="text-amber-500 text-sm flex space-x-0.5">
+                            <i th:each="i : ${#numbers.sequence(1, 5)}" 
+                               th:class="${i <= recensione.valutazione} ? 'fa-solid fa-star' : 'fa-regular fa-star text-slate-200'"></i>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <h2 th:text="${recensione.esperienza.titolo}">Titolo Esperienza</h2>
+                        <p class="text-sm text-slate-600 leading-relaxed" th:text="${recensione.contenuto}">Contenuto della recensione...</p>
+                    </div>
+                </section>
+
+                <div class="flex space-x-8 border-b border-slate-200 text-sm font-bold">
+                    <button class="pb-4 border-b-2 border-pugliamare text-pugliamare">Discussione ed Approfondimenti</button>
+                </div>
+
+                <section class="space-y-6">
+                    <h3 class="text-lg font-bold flex items-center text-slate-700">
+                        <i class="fa-regular fa-comments mr-2 text-pugliamare"></i> Commenti alla recensione
+                    </h3>
+
+                    <div th:if="${#lists.isEmpty(commenti)}" class="text-sm text-slate-400 italic p-4 bg-white rounded-2xl border border-dashed text-center">
+                        Nessun commento presente per questa recensione.
+                    </div>
+
+                    <div th:each="comm : ${commenti}" class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-9 h-9 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-sm">C</div>
+                                <div>
+                                    <span class="font-bold text-sm text-slate-700" th:text="'Utente #' + ${comm.idUtente}">Utente</span>
+                                    <span class="block text-[10px] text-slate-400" th:text="${comm.dataCommento}">Data</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <p class="text-sm text-slate-600 pl-1" th:text="${comm.commento}">Testo del commento...</p>
+
+                        <div class="bg-slate-50 p-4 rounded-2xl border-l-4 border-pugliamare ml-4 space-y-2">
+                            <div class="flex items-center space-x-2 text-pugliamare">
+                                <i class="fa-solid fa-reply fa-flip-horizontal text-xs"></i>
+                                <span class="text-[11px] font-bold uppercase tracking-wider">Team Pugliamare (Staff)</span>
+                            </div>
+                            <p class="text-xs text-slate-600 italic">
+                                Grazie per aver partecipato alla discussione! Il nostro staff monitora costantemente i feedback per garantire la migliore esperienza.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="space-y-6 pt-4">
+                    <h3 class="text-lg font-bold flex items-center text-slate-700">
+                        <i class="fa-solid fa-circle-question mr-2 text-sky-500"></i> Domande e Risposte della Community
+                    </h3>
+
+                    <div th:if="${#lists.isEmpty(domande)}" class="text-sm text-slate-400 italic p-4 bg-white rounded-2xl border border-dashed text-center">
+                        Nessuna domanda posta finora per questa esperienza.
+                    </div>
+
+                    <div th:each="domanda : ${domande}" class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm space-y-4">
+                        <div class="bg-sky-50/50 p-4 rounded-2xl border border-sky-100">
+                            <div class="flex items-center space-x-2 mb-2 text-xs text-sky-800 font-semibold">
+                                <span th:text="${domanda.utente.nome} + ' ' + ${domanda.utente.cognome}">Utente</span>
+                                <span class="text-slate-300">•</span>
+                                <span th:text="${domanda.dataDomanda}">Data</span>
+                            </div>
+                            <p class="text-sm font-bold text-slate-800" th:text="${domanda.contenuto}">Contenuto della domanda?</p>
+                        </div>
+
+                        <div class="ml-6 space-y-3">
+                            <div th:each="risposta : ${risposteMappa.get(domanda.id)}" class="bg-slate-50 p-4 rounded-2xl border border-slate-200/60">
+                                <div class="flex items-center space-x-2 mb-1 text-[11px] font-bold text-slate-500">
+                                    <i class="fa-solid fa-comment-dots text-slate-400 mr-1"></i>
+                                    <span th:text="${risposta.utente.nome} + ' ' + ${risposta.utente.cognome}">Utente Risposta</span>
+                                    <span class="font-normal text-slate-400" th:text="${risposta.data_risposta}">Data</span>
+                                </div>
+                                <p class="text-xs text-slate-600" th:text="${risposta.contenuto}">Testo della risposta...</p>
+                            </div>
+                            
+                            <div th:if="${#lists.isEmpty(risposteMappa.get(domanda.id))}" class="text-xs text-slate-400 italic pl-2">
+                                Nessuno ha ancora risposto a questa domanda.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <aside class="space-y-6 lg:sticky lg:top-24 h-fit">
+                <section class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
+                    <h3 class="text-lg font-bold mb-6">Valutazione Esperienza</h3>
+                    
+                    <div class="flex items-center space-x-4 mb-8">
+                        <span class="text-5xl font-black text-slate-900 tracking-tighter" th:text="${recensione.valutazione}">4.9</span>
+                        <div>
+                            <div class="text-amber-500 flex space-x-0.5 text-sm">
+                                <i th:each="i : ${#numbers.sequence(1, 5)}" 
+                                   th:class="${i <= recensione.valutazione} ? 'fa-solid fa-star' : 'fa-regular fa-star text-slate-200'"></i>
+                            </div>
+                            <p class="text-xs text-slate-400 font-bold mt-1">Punteggio di questa recensione</p>
+                        </div>
+                    </div>
+
+                    <button class="w-full bg-pugliamare hover:bg-sky-900 text-white font-bold py-4 px-4 rounded-2xl shadow-lg transition-all text-sm uppercase tracking-widest">
+                        Prenota questo Tour
+                    </button>
+                    <p class="text-center text-[10px] text-slate-400 mt-4 font-semibold">
+                        <i class="fa-solid fa-circle-info mr-1"></i> Prenotazione sicura tramite Pugliamare
+                    </p>
+                </section>
+                
+                <div class="bg-sky-50 p-6 rounded-3xl border border-sky-100">
+                    <h4 class="text-pugliamare font-bold text-sm mb-2">Hai dubbi sull'attività?</h4>
+                    <p class="text-xs text-sky-700 leading-relaxed">
+                        Scorri la pagina e usa la sezione <strong>Domande e Risposte</strong> per chiedere dettagli a chi ha già vissuto l'esperienza prima di te!
+                    </p>
+                </div>
+            </aside>
+
+        </div>
+    </main>
+
+</body>
+</html>

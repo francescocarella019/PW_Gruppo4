@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Test Rapido Utenti</title>
@@ -10,6 +10,6 @@
     
     <ul id="lista-utenti"></ul>
 
-    <script src="@{static/script.js}"></script>
+    <script th:src="@{/script.js}"></script>
 </body>
 </html>

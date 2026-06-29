@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -24,12 +26,17 @@ public class Recensione {
     @Column(name = "Data")
     private LocalDate data;
 
+    @Column(name = "Contenuto", columnDefinition = "TEXT")
+    private String contenuto;
+
     @Column(name = "lunghezza_contenuto")
     private Integer lunghezzaContenuto;
 
-    @Column(name = "id_utente")
-    private Long idUtente;
+    @ManyToOne
+    @JoinColumn(name = "id_utente")
+    private Utente utente;
 
-    @Column(name = "id_esperienza")
-    private Long idEsperienza;
+    @ManyToOne
+    @JoinColumn(name = "id_esperienza")
+    private Esperienza esperienza;
 }

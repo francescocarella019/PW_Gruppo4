@@ -7,5 +7,5 @@ import org.springframework.data.repository.CrudRepository;
 import com.gruppo4.pw.model.Commento;
 
 public interface CommentoRepository extends CrudRepository<Commento, Long> {
-    
+    List<Commento> findByRecensioneId(Long recensioneId);
 }

@@ -25,7 +25,7 @@ public class Esperienza {
     private BigDecimal prezzo;
 
     @Column(name = "is_disponibile")
-    private boolean isDisponibile;
+    private Boolean isDisponibile;
 
     @ManyToOne
     @JoinColumn(name = "id_luogo")
