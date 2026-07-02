@@ -1,51 +1,166 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accedi</title>
-    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <title>Pugliamare - Dettaglio Esperienza</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .bg-pugliamare { background-color: #003366; }
+        .text-pugliamare { color: #003366; }
+        .border-pugliamare { border-color: #003366; }
+    </style>
 </head>
 
-<body>
-    <nav>
+<body class="bg-slate-50 font-sans text-slate-800 antialiased">
 
-    </nav>
-    <main>
-        <div id="auth-container">
-            <form th:action="@{/login}" method="POST">
-                <h1 class="brand-title">Pugliamare</h1>
-                <p class="subtitle">Bentornato. Accedi per continuare.</p>
+    <header class="bg-white border-b border-slate-100 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+            
+            <div class="flex items-center space-x-2">
+                <a th:href="@{/}" class="flex items-center space-x-2 group">
+                    <div class="w-9 h-9 rounded-xl bg-sky-900 text-white flex items-center justify-center font-black tracking-tighter shadow-sm group-hover:bg-sky-800 transition-colors">
+                        PM
+                    </div>
+                    <span class="text-lg font-black tracking-tight text-slate-900">
+                        Puglia<span class="text-sky-600">mare</span>
+                    </span>
+                </a>
+            </div>
 
-                <div class="form-group">
-                    <label for="username">Email</label>
-                    <input type="email" id="username" name="username" placeholder="tuo@indirizzo.com" required>
-                </div>
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-semibold text-slate-600">
+                <a th:href="@{/}" class="hover:text-sky-600 transition-colors">Homepage</a>
+                <a th:href="@{/chi-siamo}" class="hover:text-sky-600 transition-colors">Chi siamo</a>
+                <a th:href="@{/contattaci}" class="hover:text-sky-600 transition-colors">Contattaci</a>
+            </nav>
 
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" placeholder="password" required>
-                </div>
+            <div class="flex items-center">
+                <a th:href="@{/login}" class="p-2.5 rounded-xl text-slate-600 hover:text-sky-900 hover:bg-slate-50 border border-transparent hover:border-slate-100 flex items-center justify-center transition-all" title="Accedi">
+                    <i class="fa-solid fa-circle-user text-xl"></i>
+                </a>
+            </div>
 
-                <div class="forgot-password-container">
-                    <a href="#" class="forgot-password">Password dimenticata?</a>
-                </div>
+        </div>
+    </header>
 
-                <button type="submit" class="btn-primary">Accedi &rarr;</button>
+    <div class="bg-slate-100/60 border-b border-slate-200/40 py-2.5">
+        <div class="max-w-5xl mx-auto px-4 flex items-center justify-between">
+            <a th:href="@{/reviews}" class="text-xs font-bold text-sky-700 hover:text-sky-900 flex items-center space-x-1.5 transition-colors">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>Torna a tutte le esperienze</span>
+            </a>
+            <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
+                Spazio Community
+            </span>
+        </div>
+    </div>
 
-                <div class="divider">
-                    <span>oppure</span>
-                </div>
-
-                <a href="#" class="btn-secondary">Registrati</a>
-            </form>
+    <main class="max-w-5xl mx-auto px-4 py-8">
+        
+        <div class="mb-8 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+            <p class="text-xs font-extrabold uppercase tracking-widest text-sky-600 mb-1">Discussioni attive per:</p>
+            <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight" th:text="${esperienza.titolo}">
+                Titolo dell'Esperienza Centrale
+            </h1>
+            <p class="text-sm text-slate-500 mt-2 flex items-center" th:text="'Totale racconti condivisi: ' + ${recensioni.size()}">
+                <i class="fa-regular fa-comments mr-1.5 text-sky-500"></i> 3 racconti condivisi
+            </p>
         </div>
 
+        <section class="space-y-6">
+
+            <div th:if="${#lists.isEmpty(recensioni)}" class="bg-white rounded-2xl p-12 text-center border border-slate-100 shadow-sm">
+                <p class="text-slate-400 font-semibold">Nessun utente ha ancora recensito questa attività nel forum.</p>
+            </div>
+
+            <article th:each="recensione : ${recensioni}" 
+                     class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden transition-all duration-200 hover:border-slate-200">
+                
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-full bg-sky-900 text-white flex items-center justify-center font-bold text-sm uppercase">
+                                <span th:text="${#strings.substring(recensione.utente.nome, 0, 1)}">U</span>
+                            </div>
+                            <div>
+                                <h3 class="text-sm font-bold text-slate-900 leading-none" th:text="${recensione.utente.nome + ' ' + recensione.utente.cognome}">
+                                    Nome Cognome Utente
+                                </h3>
+                                <p class="text-[10px] text-slate-400 font-bold tracking-wide uppercase mt-1">Esploratore Certificato</p>
+                            </div>
+                        </div>
+                        
+                        <div class="text-amber-400 flex space-x-0.5 text-xs bg-amber-50 px-2.5 py-1 rounded-lg">
+                            <i th:each="i : ${#numbers.sequence(1, 5)}"
+                               th:class="${i <= recensione.valutazione} ? 'fa-solid fa-star' : 'fa-regular fa-star text-slate-200'"></i>
+                        </div>
+                    </div>
+
+                    <p class="text-slate-700 text-sm leading-relaxed whitespace-pre-line" th:text="${recensione.contenuto}">
+                        Contenuto esteso della recensione inserito dall'utente sul portale...
+                    </p>
+                </div>
+
+                <div class="bg-slate-50 border-t border-slate-100 p-6 space-y-6">
+                    
+                    <div class="space-y-3">
+                        <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-400 flex items-center">
+                            <i class="fa-regular fa-comment-dots mr-1.5 text-slate-400 text-sm"></i> Commenti della community
+                        </h4>
+                        
+                        <div th:each="commento : ${commentiMappa.get(recensione.id)}" 
+                             class="bg-white p-4 rounded-xl border border-slate-200/60 shadow-xs flex gap-3">
+                            <div class="w-6 h-6 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-[10px] uppercase shrink-0">
+                                <span>C</span>
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold text-slate-800">Esploratore</p>
+                                <p class="text-xs text-slate-600 mt-1">Un commento è stato condiviso su questa esperienza.</p>
+                            </div>
+                        </div>
+                        
+                        <div th:if="${#lists.isEmpty(commentiMappa.get(recensione.id))}" class="text-xs text-slate-400 italic pl-1">
+                            Nessun commento inserito.
+                        </div>
+                    </div>
+
+                    <div class="space-y-4 pt-2 border-t border-slate-200/40">
+                        <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-400 flex items-center">
+                            <i class="fa-solid fa-circle-question mr-1.5 text-slate-400 text-sm"></i> Domande Frequenti su questo racconto
+                        </h4>
+
+                        <div th:each="domanda : ${domandeMappa.get(recensione.id)}" class="space-y-2">
+                            <div class="bg-sky-50 border border-sky-100 p-4 rounded-xl">
+                                <p class="text-xs font-extrabold text-sky-900 uppercase tracking-tight flex items-center">
+                                    <span class="bg-sky-200 text-sky-900 px-1.5 py-0.5 rounded text-[9px] mr-2 font-black">DOMANDA</span>
+                                    <span th:text="${domanda.utente.nome} + ' chiede:'">Utente</span>
+                                </p>
+                                <p class="text-xs font-semibold text-slate-800 mt-1.5">È richiesta una prenotazione anticipata per questa attività?</p>
+                            </div>
+
+                            <div class="pl-6 space-y-2">
+                                <div th:each="risposta : ${risposteMappa.get(domanda.id)}" class="bg-emerald-50/60 border border-emerald-100 p-3 rounded-xl flex gap-2">
+                                    <i class="fa-solid fa-turn-up text-emerald-400 rotate-90 text-[10px] mt-0.5"></i>
+                                    <div>
+                                        <p class="text-[10px] font-black text-emerald-900 uppercase tracking-wider">Risposta verificata</p>
+                                        <p class="text-xs text-slate-700 mt-0.5">Sì, consigliamo di farlo almeno due giorni prima.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div th:if="${#lists.isEmpty(domandeMappa.get(recensione.id))}" class="text-xs text-slate-400 italic pl-1">
+                            Nessun dubbio o domanda sollevata per questa recensione.
+                        </div>
+                    </div>
+
+                </div>
+            </article>
+
+        </section>
     </main>
-    <footer>
 
-    </footer>
 </body>
-
 </html>
