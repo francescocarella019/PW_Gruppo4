@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pugliamare - Contattaci</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="bg-slate-50 font-sans text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- HEADER GLOBAL NAVBAR -->
+    <header class="bg-white border-b border-slate-100 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+            
+            <!-- SINISTRA: Logo -->
+            <div class="flex items-center">
+                <a th:href="@{/reviews}" class="flex items-center space-x-3 group">
+                     <img th:src="@{/images/pugliamare.jpg}" alt="Pugliamare Logo" class="h-9 w-auto rounded-lg object-contain" />
+                </a>
+            </div>
+
+            <!-- CENTRO: Navigazione -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-semibold text-slate-600">
+                <a th:href="@{/reviews}" class="hover:text-sky-600 transition-colors">Homepage</a>
+                <a th:href="@{/chi-siamo}" class="hover:text-sky-600 transition-colors">Chi siamo</a>
+                <a th:href="@{/contattaci}" class="text-sky-600 font-bold transition-colors">Contattaci</a>
+            </nav>
+
+            <!-- DESTRA: Login -->
+            <div class="flex items-center">
+                <a th:href="@{/login}" class="p-2.5 rounded-xl text-slate-600 hover:text-sky-900 hover:bg-slate-50 border border-transparent hover:border-slate-100 flex items-center justify-center transition-all" title="Accedi">
+                    <i class="fa-solid fa-circle-user text-xl"></i>
+                </a>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- CONTENUTO PRINCIPALE FLUIDO -->
+    <main class="flex-grow w-full">
+        
+        <!-- HERO SEGMENT: Titolo Grande richiesto -->
+        <section class="relative bg-gradient-to-b from-sky-50 via-white to-transparent pt-16 pb-12 overflow-hidden">
+            <div class="max-w-3xl mx-auto px-4 text-center">
+                
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-sky-100 text-sky-800 uppercase tracking-wider mb-6">
+                    <i class="fa-regular fa-envelope mr-1.5"></i> Mettiti in contatto con noi
+                </span>
+                
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-none mb-6">
+                    Hai domande? <span class="text-sky-600">Siamo qui per risponderti.</span>
+                </h1>
+                
+                <p class="text-lg md:text-xl text-slate-500 font-medium leading-relaxed max-w-2xl mx-auto">
+                    Che tu sia un viaggiatore in cerca di informazioni o un operatore locale desideroso di collaborare con Pugliamare, scrivici un messaggio. Il nostro team ti risponderà prima possibile.
+                </p>
+
+            </div>
+        </section>
+
+        <!-- SEZIONE FORM ED EDITORIAL INFO -->
+        <section class="max-w-4xl mx-auto px-4 pb-20">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
+                
+                <!-- COLONNA DI SINISTRA: Il Modulo (Occupa 7 spazi su 12) -->
+                <div class="md:col-span-7 bg-white p-8 rounded-2xl border border-slate-100 shadow-sm">
+                    <h3 class="text-xl font-extrabold text-slate-900 tracking-tight mb-6">Invia un messaggio</h3>
+                    
+                    <!-- Form Thymeleaf (Modifica l'action e l'oggetto in base al tuo backend se necessario) -->
+                    <form th:action="@{/contattaci}" method="POST" class="space-y-5">
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="nome" class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Nome</label>
+                                <input type="text" id="nome" name="nome" placeholder="Il tuo nome" required
+                                    class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:bg-white transition-all">
+                            </div>
+                            <div>
+                                <label for="cognome" class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Cognome</label>
+                                <input type="text" id="cognome" name="cognome" placeholder="Il tuo cognome" required
+                                    class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:bg-white transition-all">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="email" class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Email</label>
+                            <input type="email" id="email" name="email" placeholder="esempio@email.com" required
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:bg-white transition-all">
+                        </div>
+
+                        <div>
+                            <label for="messaggio" class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Messaggio</label>
+                            <textarea id="messaggio" name="messaggio" rows="5" placeholder="Come possiamo aiutarti?" required
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:bg-white transition-all resize-none"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full sm:w-auto px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold text-sm rounded-xl shadow-sm transition-colors flex items-center justify-center space-x-2">
+                            <span>Invia Messaggio</span>
+                            <i class="fa-solid fa-paper-plane text-xs"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- COLONNA DI DESTRA: Informazioni ed Editoriale (Occupa 5 spazi su 12) -->
+                <div class="md:col-span-5 space-y-8 text-slate-600 text-sm md:text-base leading-relaxed">
+                    
+                    <div>
+                        <h3 class="text-xs font-extrabold uppercase tracking-widest text-slate-400 mb-3">Recapiti Diretti</h3>
+                        <p class="text-slate-700">
+                            Se preferisci scriverci direttamente o hai urgenze amministrative, puoi utilizzare i nostri canali ufficiali dedicati alla community:
+                        </p>
+                        
+                        <div class="mt-4 space-y-3 font-semibold text-slate-800">
+                            <div class="flex items-center space-x-3 text-sm">
+                                <i class="fa-regular fa-envelope text-sky-500 text-base w-5"></i>
+                                <a href="mailto:info@pugliamare.it" class="hover:text-sky-600 transition-colors">info@pugliamare.it</a>
+                            </div>
+                            <div class="flex items-center space-x-3 text-sm">
+                                <i class="fa-solid fa-headset text-sky-500 text-base w-5"></i>
+                                <span class="text-slate-600">Supporto Partner: Lun - Ven, 9:00 - 18:00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="border-slate-200/60">
+
+                    <div>
+                        <h3 class="text-xs font-extrabold uppercase tracking-widest text-slate-400 mb-2">Sei un armatore o uno skipper?</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed">
+                            Lavoriamo costantemente per includere nuove esperienze verificate sulla nostra piattaforma. Se gestisci escursioni, tour guidati o attività nautiche in Puglia, segnalacelo nel messaggio specificando la tua zona operativa (es. Gargano, Salento, Terra di Bari).
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200/60 mt-auto">
+        <div class="max-w-5xl mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pb-6 border-b border-slate-100">
+                
+                <!-- Colonna 1: Info Brand -->
+                <div class="space-y-3">
+                    <div class="flex items-center space-x-3">
+                        <a th:href="@{/reviews}" class="flex items-center space-x-2 group">
+                            <img th:src="@{/images/pugliamare.jpg}" alt="Pugliamare Logo" class="h-7 w-auto rounded-md object-contain" />
+                        </a>
+                    </div>
+                    <p class="text-xs text-slate-500 leading-relaxed">
+                        Il portale dedicato alla community degli amanti del mare pugliese. Condividi, esplora e pianifica le tue esperienze.
+                    </p>
+                </div>
+
+                <!-- Colonna 2: Link di Navigazione Rapidi -->
+                <div class="space-y-2.5">
+                    <h5 class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Navigazione</h5>
+                    <ul class="space-y-2 text-xs font-semibold text-slate-600">
+                        <li><a th:href="@{/reviews}" class="hover:text-sky-600 transition-colors">Homepage</a></li>
+                        <li><a th:href="@{/chi-siamo}" class="hover:text-sky-600 transition-colors">Chi siamo</a></li>
+                        <li><a th:href="@{/contattaci}" class="hover:text-sky-600 transition-colors">Contattaci</a></li>
+                    </ul>
+                </div>
+
+                <!-- Colonna 3: Supporto & Social -->
+                <div class="space-y-2.5">
+                    <h5 class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Contatti &amp; Social</h5>
+                    <p class="text-xs text-slate-600 font-medium">
+                        <i class="fa-regular fa-envelope mr-1.5 text-slate-400"></i> info@pugliamare.it
+                    </p>
+                    <div class="flex space-x-3 pt-1">
+                        <a href="#" class="w-7 h-7 rounded-lg bg-slate-50 border border-slate-100 text-slate-400 hover:text-sky-600 hover:border-sky-100 flex items-center justify-center transition-colors">
+                            <i class="fa-brands fa-instagram text-sm"></i>
+                        </a>
+                        <a href="#" class="w-7 h-7 rounded-lg bg-slate-50 border border-slate-100 text-slate-400 hover:text-sky-600 hover:border-sky-100 flex items-center justify-center transition-colors">
+                            <i class="fa-brands fa-facebook-f text-xs"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Bottom Copyright -->
+            <div class="pt-4 flex flex-col md:flex-row items-center justify-between gap-2 text-[11px] text-slate-400 font-medium">
+                <p>&copy; 2026 Pugliamare. Tutti i diritti riservati.</p>
+                <div class="flex space-x-4">
+                    <a href="#" class="hover:text-slate-600 transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-slate-600 transition-colors">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

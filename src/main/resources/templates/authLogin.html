@@ -18,18 +18,15 @@
     <main class="main-auth">
 
         <div class="auth-container">
-            <!-- th:action punta al login di Spring Security -->
             <form th:action="@{/login}" method="POST">
                 
                 <h1 class="brand-title">Pugliamare</h1>
                 <p class="subtitle">Bentornato! Accedi per continuare.</p>
 
-                <!-- Box di errore opzionale nel caso in cui le credenziali siano errate -->
                 <div th:if="${param.error}" style="color: #b91c1c; background-color: #fef2f2; border: 1px solid #fee2e2; padding: 10px; border-radius: 8px; text-align: center; font-size: 13px; margin-bottom: 15px; font-weight: bold;">
                     Email o password errate.
                 </div>
 
-                <!-- Campo Email / Username -->
                 <div class="form-group">
                     <label for="username">Email</label>
                     <!-- Nota: Spring Security di default si aspetta 'username', quindi usiamo id/name="username" di tipo email -->

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pugliamare - Chi Siamo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="bg-slate-50 font-sans text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- HEADER GLOBAL NAVBAR -->
+    <header class="bg-white border-b border-slate-100 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+            
+            <!-- SINISTRA: Logo -->
+            <div class="flex items-center">
+                <a th:href="@{/reviews}" class="flex items-center space-x-3 group">
+                     <img th:src="@{/images/pugliamare.jpg}" alt="Pugliamare Logo" class="h-9 w-auto rounded-lg object-contain" />
+                </a>
+            </div>
+
+            <!-- CENTRO: Navigazione -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-semibold text-slate-600">
+                <a th:href="@{/reviews}" class="hover:text-sky-600 transition-colors">Homepage</a>
+                <a th:href="@{/chi-siamo}" class="text-sky-600 font-bold transition-colors">Chi siamo</a>
+                <a th:href="@{/contattaci}" class="hover:text-sky-600 transition-colors">Contattaci</a>
+            </nav>
+
+            <!-- DESTRA: Login -->
+            <div class="flex items-center">
+                <a th:href="@{/login}" class="p-2.5 rounded-xl text-slate-600 hover:text-sky-900 hover:bg-slate-50 border border-transparent hover:border-slate-100 flex items-center justify-center transition-all" title="Accedi">
+                    <i class="fa-solid fa-circle-user text-xl"></i>
+                </a>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- INTERA SEZIONE INTRODUTTIVA (NO BLOCCHI, FLUIDA ED EDITORIALE) -->
+    <main class="flex-grow w-full">
+        
+        <!-- HERO SEGMENT: Titolo Grande e d'Impatto -->
+        <section class="relative bg-gradient-to-b from-sky-50 via-white to-transparent pt-16 pb-12 overflow-hidden">
+            <div class="max-w-3xl mx-auto px-4 text-center">
+                
+       
+                
+                <!-- Titolo Grande richiesto -->
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-none mb-6">
+                    Connettiamo cuori, imbarcazioni e <span class="text-sky-600">il mare della Puglia.</span>
+                </h1>
+                
+                <p class="text-lg md:text-xl text-slate-500 font-medium leading-relaxed max-w-2xl mx-auto">
+                    Pugliamare non è semplicemente un portale web, ma il punto d'incontro digitale per chiunque desideri vivere la costa pugliese in modo autentico, consapevole e senza filtri.
+                </p>
+
+            </div>
+        </section>
+
+        <!-- DETTAGLIO ACCURATO (Layout a narrazione continua in stile saggio/articolo moderno) -->
+        <section class="max-w-3xl mx-auto px-4 pb-20">
+            <div class="prose prose-slate max-w-none text-slate-600 text-base md:text-lg leading-relaxed space-y-8">
+                
+                <p>
+                    Nata dalla viscerale passione di un team di skipper, viaggiatori e professionisti digitali, 
+                    <strong>Pugliamare</strong> si propone di colmare il divario tra l'incredibile offerta turistica delle nostre coste e la necessità di informazioni trasparenti, verificate e accessibili a tutti. La Puglia vanta oltre 800 chilometri di litorale, caratterizzati da falesie mozzafiato, grotte marine nascoste e acque cristalline che non hanno nulla da invidiare ai paradisi tropicali. Tuttavia, pianificare un'escursione in barca o trovare l'esperienza perfetta spesso si rivelava complesso.
+                </p>
+
+                <div class="border-l-4 border-sky-500 pl-4 my-6 italic text-slate-800 font-medium bg-slate-100/50 py-3 pr-2 rounded-r-xl">
+                    "Il nostro obiettivo è trasformare ogni singola uscita in mare in un ricordo indelebile, mettendo a disposizione della community uno strumento di condivisione basato sulla totale trasparenza."
+                </div>
+
+                <h2 class="text-xl md:text-2xl font-extrabold text-slate-900 tracking-tight pt-4">
+                    Cosa facciamo concretamente?
+                </h2>
+                
+                <p>
+                    Attraverso la nostra piattaforma digitale strutturiamo un ecosistema interattivo diviso in tre anime fondamentali:
+                </p>
+
+                <ul class="space-y-4 pl-0 list-none">
+                    <li class="flex items-start gap-3">
+                        <i class="fa-solid fa-circle-check text-emerald-500 mt-1.5 shrink-0 text-sm"></i>
+                        <span><strong>Validazione delle Esperienze:</strong> Raccogliamo e mostriamo i racconti di viaggio e le recensioni dettagliate di utenti reali. Ogni valutazione analizza la qualità degli itinerari, la professionalità degli skipper e lo stato delle imbarcazioni.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fa-solid fa-circle-check text-emerald-500 mt-1.5 shrink-0 text-sm"></i>
+                        <span><strong>Domande &amp; Risposte Certificate:</strong> Abbiamo integrato un sistema di FAQ e commenti dinamici per ogni singola recensione. Se hai dubbi sulla necessità di prenotare in anticipo, sulla presenza di ombra a bordo o sulla fattibilità di un tour per bambini, puoi chiedere direttamente a chi ha già vissuto quell'esperienza prima di te.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fa-solid fa-circle-check text-emerald-500 mt-1.5 shrink-0 text-sm"></i>
+                        <span><strong>Supporto all'Economia Costiera:</strong> Sosteniamo attivamente i piccoli armatori, i centri diving e i noleggiatori locali della regione, offrendo loro la visibilità che meritano e valorizzando il lavoro di chi il mare lo vive e lo rispetta ogni giorno.</span>
+                    </li>
+                </ul>
+
+                <p class="pt-4">
+                    Da Gargano a Santa Maria di Leuca, passando per le perle di Polignano a Mare, Monopoli e le coste del Salento, Pugliamare vi accompagna prima, durante e dopo la vostra navigazione, garantendo la sicurezza di un consiglio fidato e la bellezza incontaminata della nostra terra.
+                </p>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200/60 mt-auto">
+        <div class="max-w-5xl mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pb-6 border-b border-slate-100">
+                
+                <!-- Colonna 1: Info Brand -->
+                <div class="space-y-3">
+                    <div class="flex items-center space-x-3">
+                        <a th:href="@{/reviews}" class="flex items-center space-x-2 group">
+                            <img th:src="@{/images/pugliamare.jpg}" alt="Pugliamare Logo" class="h-7 w-auto rounded-md object-contain" />
+                        </a>
+                    </div>
+                    <p class="text-xs text-slate-500 leading-relaxed">
+                        Il portale dedicato alla community degli amanti del mare pugliese. Condividi, esplora e pianifica le tue esperienze.
+                    </p>
+                </div>
+
+                <!-- Colonna 2: Link di Navigazione Rapidi -->
+                <div class="space-y-2.5">
+                    <h5 class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Navigazione</h5>
+                    <ul class="space-y-2 text-xs font-semibold text-slate-600">
+                        <li><a th:href="@{/reviews}" class="hover:text-sky-600 transition-colors">Homepage</a></li>
+                        <li><a th:href="@{/chi-siamo}" class="hover:text-sky-600 transition-colors">Chi siamo</a></li>
+                        <li><a th:href="@{/contattaci}" class="hover:text-sky-600 transition-colors">Contattaci</a></li>
+                    </ul>
+                </div>
+
+                <!-- Colonna 3: Supporto & Social -->
+                <div class="space-y-2.5">
+                    <h5 class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Contatti &amp; Social</h5>
+                    <p class="text-xs text-slate-600 font-medium">
+                        <i class="fa-regular fa-envelope mr-1.5 text-slate-400"></i> info@pugliamare.it
+                    </p>
+                    <div class="flex space-x-3 pt-1">
+                        <a href="#" class="w-7 h-7 rounded-lg bg-slate-50 border border-slate-100 text-slate-400 hover:text-sky-600 hover:border-sky-100 flex items-center justify-center transition-colors">
+                            <i class="fa-brands fa-instagram text-sm"></i>
+                        </a>
+                        <a href="#" class="w-7 h-7 rounded-lg bg-slate-50 border border-slate-100 text-slate-400 hover:text-sky-600 hover:border-sky-100 flex items-center justify-center transition-colors">
+                            <i class="fa-brands fa-facebook-f text-xs"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Bottom Copyright -->
+            <div class="pt-4 flex flex-col md:flex-row items-center justify-between gap-2 text-[11px] text-slate-400 font-medium">
+                <p>&copy; 2026 Pugliamare. Tutti i diritti riservati.</p>
+                <div class="flex space-x-4">
+                    <a href="#" class="hover:text-slate-600 transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-slate-600 transition-colors">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

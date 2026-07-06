@@ -37,6 +37,14 @@ public class ForumController {
     @Autowired
     private EsperienzaRepository manteneraEsperienzaRepository;
 
+    @GetMapping("/chi-siamo")
+public String chiSiamo() {
+    return "chi-siamo"; // Deve corrispondere ESATTAMENTE al nome del file .html senza estensione
+}
+@GetMapping("/contattaci")
+public String contattaci(){
+    return "contattaci"; // Deve corrispondere ESATTAMENTE al nome del file .html senza estensione
+}
     @GetMapping("/reviews")
     public String mostraForum(Model model, 
                               @RequestParam(required = false) Long categoriaId,

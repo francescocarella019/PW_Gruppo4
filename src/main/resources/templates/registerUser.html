@@ -7,7 +7,24 @@
 
     <link rel="stylesheet" th:href="@{/css/authpage.css}">
     <script th:src="@{/js/authpage.js}" defer></script>
-
+    
+    <!-- Stile in linea rapido per distanziare il link dal bottone e renderlo cliccabile (puoi spostarlo nel tuo authpage.css) -->
+    <style>
+        .login-redirect {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+        .login-redirect a {
+            color: #0284c7;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .login-redirect a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -42,6 +59,11 @@
                 </div>
 
                 <button type="submit" class="btn-primary">Registrati &rarr;</button>
+                
+                <!-- NUOVO LINK AGGIUNTO SOTTO IL TASTO -->
+                <p class="login-redirect">
+                    Hai già un account? <a th:href="@{/login}">Accedi</a>
+                </p>
             </form>
         </div>
 
