@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crea un nuovo account</title>
+
+    <link rel="stylesheet" th:href="@{/css/authpage.css}">
+    <script th:src="@{/js/authpage.js}" defer></script>
+
+</head>
+<body>
+    <header>
+        <nav>
+
+        </nav>
+    </header>
+    <main class="main-auth">
+
+        <div class="auth-container">
+            <form th:action="@{/register}" th:object="${utente}" method="POST">
+                <h1 class="brand-title">Pugliamare</h1>
+                <p class="subtitle">Benvenuto! Crea un nuovo account.</p>
+                <!--Prima parte: Info basiche per fare il login-->
+                <div class="form-group">
+                    <label for="username">Email</label>
+                    <input type="email" id="email" th:field="*{email}" placeholder="&#9993; Inserisci l'email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" th:field="*{password}" placeholder="&#x1F512;&#xFE0E; Inserisci password" required>
+                    <input type="password" id="passwordConferma" name="passwordConferma" placeholder="&#x1F512;&#xFE0E; Conferma password" required>
+                </div>
+
+                <!--Seconda Parte: Info Personali-->
+                <div class="form-group">
+                    <label for="informazioni-personali">Informazioni personali</label>
+                    <input type="text" th:field="*{nome}" placeholder="Inserisci nome">
+                    <input type="text" th:field="*{cognome}" placeholder="Inserisci cognome" required>
+                    <input  type="date" th:field="*{dataNascita}"placeholder="Inserisci la tua data di nascità" required>
+                </div>
+
+                <button type="submit" class="btn-primary">Registrati &rarr;</button>
+            </form>
+        </div>
+
+    </main>
+    <footer>
+
+    </footer>
+</body>
+</html>
