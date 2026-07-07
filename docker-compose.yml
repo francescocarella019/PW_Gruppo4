@@ -1,0 +1,38 @@
+services:
+
+  # -------------------- DATABASE --------------------
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: forum_pugliamare
+      # Rimosso MYSQL_USER: root per evitare il crash
+      MYSQL_PASSWORD: 1234
+      MYSQL_ROOT_PASSWORD: 1234
+    ports:
+      - "3307:3306"                     # <-- CORRETTO: Porta 3307 esterna (PC) -> Porta 3306 interna (Container)
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # -------------------- APPLICAZIONE --------------------
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      # <-- CORRETTO: Poiché l'app parla direttamente con l'altro container nella rete interna di Docker,
+      # deve usare la porta interna nativa di MySQL, ovvero la 3306 (non la 3307 che esponi sul PC).
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/forum_pugliamare
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 1234
+    depends_on:
+      db:
+        condition: service_healthy
+
+# -------------------- VOLUMI --------------------
+volumes:
+  db_data:
