@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="it">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,36 +10,31 @@
         .bg-pugliamare { background-color: #003366; }
         .text-pugliamare { color: #003366; }
         .border-pugliamare { border-color: #003366; }
+        .tab-active { color: #003366 !important; border-color: #003366 !important; font-weight: bold !important; }
+        /* Cambiato in un giallo oro più acceso e brillante */
+        .text-rating-gold { color: #eab308; }
+        .bg-rating-gold { background-color: #eab308; }
     </style>
 </head>
-
 <body class="bg-slate-50 font-sans text-slate-800 antialiased min-h-screen flex flex-col">
 
-<header class="bg-white border-b border-slate-100 sticky top-0 z-50 shadow-sm">
+    <header class="bg-white border-b border-slate-100 sticky top-0 z-50 shadow-sm">
         <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
-            
-            <!-- SINISTRA: Logo con Immagine -->
             <div class="flex items-center">
                 <a th:href="@{/}" class="flex items-center space-x-3 group">
-                    <!-- Immagine del logo ottimizzata per l'altezza dell'header -->
-                     <img th:src="@{/images/pugliamare.jpg}" alt="Pugliamare Logo" class="h-9 w-auto rounded-lg object-contain" />
+                    <img th:src="@{/images/pugliamare.jpg}" alt="Pugliamare Logo" class="h-9 w-auto rounded-lg object-contain" />
                 </a>
             </div>
-
-            <!-- CENTRO: Navigazione -->
             <nav class="hidden md:flex items-center space-x-8 text-sm font-semibold text-slate-600">
                 <a th:href="@{/}" class="hover:text-sky-600 transition-colors">Homepage</a>
                 <a th:href="@{/chi-siamo}" class="hover:text-sky-600 transition-colors">Chi siamo</a>
                 <a th:href="@{/contattaci}" class="hover:text-sky-600 transition-colors">Contattaci</a>
             </nav>
-
-            <!-- DESTRA: Login -->
             <div class="flex items-center">
                 <a th:href="@{/login}" class="p-2.5 rounded-xl text-slate-600 hover:text-sky-900 hover:bg-slate-50 border border-transparent hover:border-slate-100 flex items-center justify-center transition-all" title="Accedi">
                     <i class="fa-solid fa-circle-user text-xl"></i>
                 </a>
             </div>
-
         </div>
     </header>
 
@@ -56,165 +50,211 @@
         </div>
     </div>
 
-    <main class="max-w-5xl mx-auto px-4 py-8 flex-grow w-full">
+    <main class="max-w-5xl mx-auto px-4 py-8 flex-grow w-full space-y-8" 
+          th:with="totalRecensioni=${recensioni.size()},
+                   voti5=${#lists.size(recensioni.?[valutazione == 5])},
+                   voti4=${#lists.size(recensioni.?[valutazione == 4])},
+                   voti3=${#lists.size(recensioni.?[valutazione == 3])},
+                   voti2=${#lists.size(recensioni.?[valutazione == 2])},
+                   voti1=${#lists.size(recensioni.?[valutazione == 1])},
+                   mediaVoti=${totalRecensioni > 0 ? #aggregates.avg(recensioni.![valutazione]) : 0.0}">
         
-        <div class="mb-8 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
-            <p class="text-xs font-extrabold uppercase tracking-widest text-sky-600 mb-1">Discussioni attive per:</p>
-            <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight" th:text="${esperienza.titolo}">
-                Titolo dell'Esperienza Centrale
-            </h1>
-            <p class="text-sm text-slate-500 mt-2 flex items-center" th:text="'Totale racconti condivisi: ' + ${recensioni.size()}">
-                <i class="fa-regular fa-comments mr-1.5 text-sky-500"></i> 3 racconti condivisi
-            </p>
-        </div>
-
-        <section class="space-y-6">
-
-            <div th:if="${#lists.isEmpty(recensioni)}" class="bg-white rounded-2xl p-12 text-center border border-slate-100 shadow-sm">
-                <p class="text-slate-400 font-semibold">Nessun utente ha ancora recensito questa attività nel forum.</p>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+            
+            <div class="lg:col-span-2 relative rounded-2xl overflow-hidden bg-slate-900 min-h-[380px] flex flex-col justify-end p-6 md:p-8 shadow-sm group">
+                <img th:src="@{/images/pugliamare.jpg}" alt="Esperienza" class="absolute inset-0 w-full h-full object-cover opacity-85 transition-transform duration-500 group-hover:scale-103">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                
+                <div class="relative z-10 space-y-3.5">
+                    <div class="flex items-center space-x-1.5 text-xs font-bold text-white">
+                        <i class="fa-solid fa-star text-yellow-500"></i>
+                        <span th:text="${totalRecensioni > 0 ? #numbers.formatDecimal(mediaVoti, 1, 1) : '0.0'}">4.9</span>
+                        <span th:text="'(' + ${totalRecensioni} + ' Recensioni)'">(128 Recensioni)</span>
+                    </div>
+                    
+                    <h1 class="text-2xl md:text-3xl font-bold text-white tracking-tight" th:text="${esperienza.titolo}">
+                        Tour in Barca alle Grotte di Polignano
+                    </h1>
+                    
+                    <div class="flex flex-wrap gap-3 pt-1">
+                        <button type="button" onclick="switchTab('recensioni')" class="bg-[#003366] hover:bg-sky-950 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-all shadow-sm">
+                            Lascia una recensione
+                        </button>
+                        <button type="button" onclick="switchTab('domande')" class="bg-transparent border border-white text-white text-xs font-semibold px-4 py-2 rounded-lg transition-all hover:bg-white/10">
+                            Fai una domanda
+                        </button>
+                    </div>
+                </div>
             </div>
 
-            <article th:each="recensione : ${recensioni}" 
-                     class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden transition-all duration-200 hover:border-slate-200">
-                
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-4">
+            <div class="bg-white border border-slate-200/80 shadow-sm rounded-2xl p-6 space-y-6">
+                <div>
+                    <h2 class="text-md font-bold text-slate-900 mb-4">Sintesi Valutazioni</h2>
+                    
+                    <div class="flex items-baseline space-x-3 mb-5">
+                        <span class="text-4xl font-bold text-[#002244] tracking-tight" th:text="${totalRecensioni > 0 ? #numbers.formatDecimal(mediaVoti, 1, 1) : '0.0'}">4.9</span>
+                        <div>
+                            <div class="text-rating-gold text-xs flex space-x-0.5">
+                                <i th:each="i : ${#numbers.sequence(1, 5)}"
+                                   th:class="${totalRecensioni > 0 && i <= mediaVoti} ? 'fa-solid fa-star' : (${totalRecensioni > 0 && i - 0.5 <= mediaVoti} ? 'fa-solid fa-star-half-stroke' : 'fa-regular fa-star text-slate-200')"></i>
+                            </div>
+                            <p class="text-[10px] text-slate-500 font-medium mt-0.5" th:text="'Su ' + ${totalRecensioni} + ' recensioni'">Su 128 recensioni</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2 text-[11px] text-slate-600">
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="w-10 shrink-0 text-left">5 stelle</span>
+                            <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                                <div class="bg-rating-gold h-full rounded-full" th:style="'width: ' + (${totalRecensioni > 0 ? (voti5 * 100 / totalRecensioni) : 0}) + '%'"></div>
+                            </div>
+                            <span class="w-6 text-right text-slate-500" th:text="${voti5}">109</span>
+                        </div>
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="w-10 shrink-0 text-left">4 stelle</span>
+                            <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                                <div class="bg-rating-gold h-full rounded-full" th:style="'width: ' + (${totalRecensioni > 0 ? (voti4 * 100 / totalRecensioni) : 0}) + '%'"></div>
+                            </div>
+                            <span class="w-6 text-right text-slate-500" th:text="${voti4}">15</span>
+                        </div>
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="w-10 shrink-0 text-left">3 stelle</span>
+                            <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                                <div class="bg-rating-gold h-full rounded-full" th:style="'width: ' + (${totalRecensioni > 0 ? (voti3 * 100 / totalRecensioni) : 0}) + '%'"></div>
+                            </div>
+                            <span class="w-6 text-right text-slate-500" th:text="${voti3}">4</span>
+                        </div>
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="w-10 shrink-0 text-left text-slate-400">2 stelle</span>
+                            <div class="w-full bg-slate-100/70 h-2 rounded-full overflow-hidden">
+                                <div class="bg-rating-gold h-full rounded-full" th:style="'width: ' + (${totalRecensioni > 0 ? (voti2 * 100 / totalRecensioni) : 0}) + '%'"></div>
+                            </div>
+                            <span class="w-6 text-right text-slate-400" th:text="${voti2}">0</span>
+                        </div>
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="w-10 shrink-0 text-left text-slate-400">1 stella</span>
+                            <div class="w-full bg-slate-100/70 h-2 rounded-full overflow-hidden">
+                                <div class="bg-rating-gold h-full rounded-full" th:style="'width: ' + (${totalRecensioni > 0 ? (voti1 * 100 / totalRecensioni) : 0}) + '%'"></div>
+                            </div>
+                            <span class="w-6 text-right text-slate-400" th:text="${voti1}">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <button class="w-full bg-[#003366] hover:bg-sky-950 text-white font-bold text-xs py-2.5 px-4 rounded-lg transition-colors shadow-sm mb-2">
+                        Prenota questo Tour
+                    </button>
+                    <p class="text-[10px] text-center text-slate-500">
+                        <i class="fa-solid fa-circle-info mr-1 text-slate-400"></i> Prenotazione tramite sito ufficiale
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="border-b border-slate-200">
+            <div class="flex space-x-6 text-xs font-bold text-slate-500">
+                <button type="button" id="btn-recensioni" onclick="switchTab('recensioni')" class="tab-active border-b-2 border-[#003366] pb-2 outline-none transition-colors">
+                    Recensioni e Foto
+                </button>
+                <button type="button" id="btn-domande" onclick="switchTab('domande')" class="hover:text-[#003366] border-b-2 border-transparent pb-2 outline-none transition-colors">
+                    FAQ / D&amp;R
+                </button>
+            </div>
+        </div>
+
+        <div class="w-full">
+            
+            <div id="content-recensioni" class="space-y-6 max-w-3xl">
+                <div th:if="${#lists.isEmpty(recensioni)}" class="bg-white rounded-2xl p-8 text-center border border-slate-100 shadow-sm">
+                    <p class="text-slate-400 text-sm font-semibold">Nessun utente ha ancora recensito questa attività nel forum.</p>
+                </div>
+
+                <article th:each="recensione : ${recensioni}" class="bg-white rounded-xl border border-slate-100 shadow-sm p-5 space-y-4">
+                    <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-3">
-                            <div class="w-10 h-10 rounded-full bg-sky-900 text-white flex items-center justify-center font-bold text-sm uppercase">
+                            <div class="w-8 h-8 rounded-full bg-sky-900 text-white flex items-center justify-center font-bold text-xs uppercase">
                                 <span th:text="${#strings.substring(recensione.utente.nome, 0, 1)}">U</span>
                             </div>
                             <div>
-                                <h3 class="text-sm font-bold text-slate-900 leading-none" th:text="${recensione.utente.nome + ' ' + recensione.utente.cognome}">
-                                    Nome Cognome Utente
-                                </h3>
-                                <p class="text-[10px] text-slate-400 font-bold tracking-wide uppercase mt-1">Esploratore Certificato</p>
+                                <h3 class="text-xs font-bold text-slate-900" th:text="${recensione.utente.nome + ' ' + recensione.utente.cognome}">Nome Cognome</h3>
+                                <p class="text-[9px] text-slate-400 font-semibold uppercase mt-0.5">Esploratore Certificato</p>
                             </div>
                         </div>
-                        
-                        <div class="text-amber-400 flex space-x-0.5 text-xs bg-amber-50 px-2.5 py-1 rounded-lg">
-                            <i th:each="i : ${#numbers.sequence(1, 5)}"
-                               th:class="${i <= recensione.valutazione} ? 'fa-solid fa-star' : 'fa-regular fa-star text-slate-200'"></i>
+                        <div class="text-yellow-500 flex space-x-0.5 text-[10px]">
+                            <i th:each="i : ${#numbers.sequence(1, 5)}" th:class="${i <= recensione.valutazione} ? 'fa-solid fa-star' : 'fa-regular fa-star text-slate-200'"></i>
                         </div>
                     </div>
 
-                    <p class="text-slate-700 text-sm leading-relaxed whitespace-pre-line" th:text="${recensione.contenuto}">
-                        Contenuto esteso della recensione inserito dall'utente sul portale...
-                    </p>
-                </div>
+                    <p class="text-slate-700 text-xs leading-relaxed whitespace-pre-line" th:text="${recensione.contenuto}">Contenuto della recensione...</p>
 
-                <div class="bg-slate-50 border-t border-slate-100 p-6 space-y-6">
-                    
-                    <div class="space-y-3">
-                        <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-400 flex items-center">
-                            <i class="fa-regular fa-comment-dots mr-1.5 text-slate-400 text-sm"></i> Commenti della community
-                        </h4>
-                        
-                        <div th:each="commento : ${commentiMappa.get(recensione.id)}" 
-                             class="bg-white p-4 rounded-xl border border-slate-200/60 shadow-xs flex gap-3">
-                            <div class="w-6 h-6 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-[10px] uppercase shrink-0">
-                                <span>C</span>
-                            </div>
-                            <div>
-                                <p class="text-xs font-bold text-slate-800">Esploratore</p>
-                                <p class="text-xs text-slate-600 mt-1">Un commento è stato condiviso su questa esperienza.</p>
-                            </div>
-                        </div>
-                        
-                        <div th:if="${#lists.isEmpty(commentiMappa.get(recensione.id))}" class="text-xs text-slate-400 italic pl-1">
-                            Nessun commento inserito.
+                    <div class="pt-3 border-t border-slate-100 space-y-2">
+                        <h4 class="text-[9px] font-bold uppercase tracking-wider text-slate-400">Commenti community</h4>
+                        <div th:each="commento : ${commentiMappa.get(recensione.id)}" class="bg-slate-50 p-3 rounded-xl border border-slate-100 text-xs text-slate-600">
+                            <p class="text-[10px] font-bold text-slate-800">Esploratore</p>
+                            <p class="mt-0.5">Un commento è stato condiviso su questa esperienza.</p>
                         </div>
                     </div>
-
-                    <div class="space-y-4 pt-2 border-t border-slate-200/40">
-                        <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-400 flex items-center">
-                            <i class="fa-solid fa-circle-question mr-1.5 text-slate-400 text-sm"></i> Domande Frequenti su questo racconto
-                        </h4>
-
-                        <div th:each="domanda : ${domandeMappa.get(recensione.id)}" class="space-y-2">
-                            <div class="bg-sky-50 border border-sky-100 p-4 rounded-xl">
-                                <p class="text-xs font-extrabold text-sky-900 uppercase tracking-tight flex items-center">
-                                    <span class="bg-sky-200 text-sky-900 px-1.5 py-0.5 rounded text-[9px] mr-2 font-black">DOMANDA</span>
-                                    <span th:text="${domanda.utente.nome} + ' chiede:'">Utente</span>
-                                </p>
-                                <p class="text-xs font-semibold text-slate-800 mt-1.5">È richiesta una prenotazione anticipata per questa attività?</p>
-                            </div>
-
-                            <div class="pl-6 space-y-2">
-                                <div th:each="risposta : ${risposteMappa.get(domanda.id)}" class="bg-emerald-50/60 border border-emerald-100 p-3 rounded-xl flex gap-2">
-                                    <i class="fa-solid fa-turn-up text-emerald-400 rotate-90 text-[10px] mt-0.5"></i>
-                                    <div>
-                                        <p class="text-[10px] font-black text-emerald-900 uppercase tracking-wider">Risposta verificata</p>
-                                        <p class="text-xs text-slate-700 mt-0.5">Sì, consigliamo di farlo almeno due giorni prima.</p>
-                                    </div>
-                                </div>
+                </article>
+            </div>
+            
+            <div id="content-domande" class="space-y-4 max-w-3xl hidden">
+                <div th:each="recensione : ${recensioni}">
+                    <div th:each="domanda : ${domandeMappa.get(recensione.id)}" class="bg-white rounded-xl border border-slate-100 p-5 space-y-3 shadow-sm">
+                        <div class="bg-sky-50/60 p-3 rounded-lg border border-sky-100">
+                            <p class="text-[9px] font-bold text-sky-900 uppercase">Domanda da <span th:text="${domanda.utente.nome}">Utente</span></p>
+                            <p class="text-xs font-medium text-slate-800 mt-1" th:text="${domanda.contenuto}">Domanda...</p>
+                        </div>
+                        <div class="pl-4 space-y-2">
+                            <div th:each="risposta : ${risposteMappa.get(domanda.id)}" class="bg-emerald-50/40 border border-emerald-100 p-3 rounded-lg text-xs text-slate-700">
+                                <p class="text-[9px] font-bold text-emerald-800 uppercase">Risposta</p>
+                                <p class="mt-0.5" th:text="${risposta.contenuto}">Risposta...</p>
                             </div>
                         </div>
-
-                        <div th:if="${#lists.isEmpty(domandeMappa.get(recensione.id))}" class="text-xs text-slate-400 italic pl-1">
-                            Nessun dubbio o domanda sollevata per questa recensione.
-                        </div>
-                    </div>
-
-                </div>
-            </article>
-
-        </section>
-    </main>
-
-<footer class="bg-white border-t border-slate-200/60 mt-auto">
-        <div class="max-w-5xl mx-auto px-4 py-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pb-6 border-b border-slate-100">
-                
-                <!-- Colonna 1: Info Brand con Immagine -->
-                <div class="space-y-3">
-                    <div class="flex items-center space-x-3">
-                        <a th:href="@{/}" class="flex items-center space-x-2 group">
-                            <img th:src="@{/images/pugliamare.jpg}" alt="Pugliamare Logo" class="h-7 w-auto rounded-md object-contain" />
-                        </a>
-                    </div>
-                    <p class="text-xs text-slate-500 leading-relaxed">
-                        Il portale dedicato alla community degli amanti del mare pugliese. Condividi, esplora e pianifica le tue esperienze.
-                    </p>
-                </div>
-
-                <!-- Colonna 2: Link di Navigazione Rapidi -->
-                <div class="space-y-2.5">
-                    <h5 class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Navigazione</h5>
-                    <ul class="space-y-2 text-xs font-semibold text-slate-600">
-                        <li><a th:href="@{/}" class="hover:text-sky-600 transition-colors">Homepage</a></li>
-                        <li><a th:href="@{/chi-siamo}" class="hover:text-sky-600 transition-colors">Chi siamo</a></li>
-                        <li><a th:href="@{/contattaci}" class="hover:text-sky-600 transition-colors">Contattaci</a></li>
-                    </ul>
-                </div>
-
-                <!-- Colonna 3: Supporto & Social -->
-                <div class="space-y-2.5">
-                    <h5 class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Contatti &amp; Social</h5>
-                    <p class="text-xs text-slate-600 font-medium">
-                        <i class="fa-regular fa-envelope mr-1.5 text-slate-400"></i> info@pugliamare.it
-                    </p>
-                    <div class="flex space-x-3 pt-1">
-                        <a href="#" class="w-7 h-7 rounded-lg bg-slate-50 border border-slate-100 text-slate-400 hover:text-sky-600 hover:border-sky-100 flex items-center justify-center transition-colors">
-                            <i class="fa-brands fa-instagram text-sm"></i>
-                        </a>
-                        <a href="#" class="w-7 h-7 rounded-lg bg-slate-50 border border-slate-100 text-slate-400 hover:text-sky-600 hover:border-sky-100 flex items-center justify-center transition-colors">
-                            <i class="fa-brands fa-facebook-f text-xs"></i>
-                        </a>
                     </div>
                 </div>
-
             </div>
 
-            <!-- Bottom Copyright -->
-            <div class="pt-4 flex flex-col md:flex-row items-center justify-between gap-2 text-[11px] text-slate-400 font-medium">
-                <p>&copy; 2026 Pugliamare. Tutti i diritti riservati.</p>
-                <div class="flex space-x-4">
-                    <a href="#" class="hover:text-slate-600 transition-colors">Privacy Policy</a>
-                    <a href="#" class="hover:text-slate-600 transition-colors">Cookie Policy</a>
+        </div>
+    </main>
+
+    <footer class="bg-white border-t border-slate-200/60 mt-auto">
+        <div class="max-w-5xl mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pb-6 border-b border-slate-100">
+                <div class="space-y-3">
+                    <img th:src="@{/images/pugliamare.jpg}" alt="Pugliamare Logo" class="h-7 w-auto rounded-md" />
+                    <p class="text-xs text-slate-500">Il portale dedicato alla community degli amanti del mare pugliese.</p>
                 </div>
+                <div class="space-y-2">
+                    <h5 class="text-xs font-bold uppercase tracking-wider text-slate-400">Navigazione</h5>
+                    <ul class="space-y-1.5 text-xs font-semibold text-slate-600">
+                        <li><a th:href="@{/}" class="hover:text-sky-600">Homepage</a></li>
+                        <li><a th:href="@{/chi-siamo}" class="hover:text-sky-600">Chi siamo</a></li>
+                    </ul>
+                </div>
+                <div class="space-y-2">
+                    <h5 class="text-xs font-bold uppercase tracking-wider text-slate-400">Contatti</h5>
+                    <p class="text-xs text-slate-600">info@pugliamare.it</p>
+                </div>
+            </div>
+            <div class="pt-4 flex flex-col md:flex-row items-center justify-between text-[11px] text-slate-400">
+                <p>&copy; 2026 Pugliamare. Tutti i diritti riservati.</p>
             </div>
         </div>
     </footer>
 
+    <script>
+        function switchTab(tabId) {
+            const isRecensioni = tabId === 'recensioni';
+            
+            document.getElementById('btn-recensioni').classList.toggle('tab-active', isRecensioni);
+            document.getElementById('btn-domande').classList.toggle('tab-active', !isRecensioni);
+            
+            document.getElementById('content-recensioni').classList.toggle('hidden', !isRecensioni);
+            document.getElementById('content-domande').classList.toggle('hidden', isRecensioni);
+            
+            document.getElementById('btn-recensioni').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    </script>
 </body>
 </html>
