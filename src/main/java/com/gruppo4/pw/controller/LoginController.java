@@ -28,7 +28,14 @@ public class LoginController {
     }
 
     @GetMapping("/login")
-    public String mostraLogin() {
+    public String mostraLogin(HttpSession session) {
+        Long utenteId = (Long) session.getAttribute("utenteId");
+        Boolean isAdmin = (Boolean) session.getAttribute("isAdmin");
+
+        if (utenteId != null) {
+            return Boolean.TRUE.equals(isAdmin) ? "redirect:/staff" : "redirect:/dashboard";
+        }
+
         return "authLogin";
     }
 
@@ -81,10 +88,41 @@ public class LoginController {
 
         if (passwordEncoder.matches(password, utente.getPassword())) {
             session.setAttribute("utenteId", utente.getId());
-            return "redirect:/dashboard";
+            session.setAttribute("isAdmin", isAdmin(utente));
+            return redirectDashboardPerRuolo(utente);
         }
 
         model.addAttribute("errore", "Email registrata: la password inserita non e' corretta.");
         return "authLogin";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
+    }
+
+    private String redirectDashboardPerRuolo(Utente utente) {
+        return isAdmin(utente) ? "redirect:/staff" : "redirect:/dashboard";
+    }
+
+    private boolean isAdmin(Utente utente) {
+        if (utente.getRuolo() == null) {
+            return false;
+        }
+
+        return contieneRuoloAdmin(utente.getRuolo().getNome())
+                || contieneRuoloAdmin(utente.getRuolo().getTipologia());
+    }
+
+    private boolean contieneRuoloAdmin(String valore) {
+        if (valore == null) {
+            return false;
+        }
+
+        String ruolo = valore.trim().toLowerCase();
+        return ruolo.contains("admin")
+                || ruolo.contains("staff")
+                || ruolo.contains("amministratore");
     }
 }

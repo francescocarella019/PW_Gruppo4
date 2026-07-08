@@ -1,9 +1,11 @@
 package com.gruppo4.pw.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
 @Table(name = "ruoli")
+@Data
 public class Ruolo {
 
     @Id

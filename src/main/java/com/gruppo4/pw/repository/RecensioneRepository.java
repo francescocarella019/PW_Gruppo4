@@ -8,4 +8,6 @@ public interface RecensioneRepository extends CrudRepository<Recensione, Long> {
     
     // QUESTO METODO DEVE ESSERE PRESENTE:
     List<Recensione> findByEsperienzaId(Long esperienzaId);
+
+    List<Recensione> findByUtenteIdOrderByDataDesc(Long utenteId);
 }

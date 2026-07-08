@@ -6,8 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.servlet.http.HttpSession;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +42,9 @@ public class ForumController {
     @Autowired
     private EsperienzaRepository manteneraEsperienzaRepository;
 
+    @Autowired
+    private UtenteRepository utenteRepository;
+
     @GetMapping("/chi-siamo")
 public String chiSiamo() {
     return "chi-siamo"; // Deve corrispondere ESATTAMENTE al nome del file .html senza estensione
@@ -45,11 +53,13 @@ public String chiSiamo() {
 public String contattaci(){
     return "contattaci"; // Deve corrispondere ESATTAMENTE al nome del file .html senza estensione
 }
-    @GetMapping("/")
+    @GetMapping({"/", "/reviews"})
     public String mostraForum(Model model, 
                               @RequestParam(required = false) Long categoriaId,
                               @RequestParam(required = false) Long esperienzaId,
-                              @RequestParam(required = false) Long recensioneId) {
+                              @RequestParam(required = false) Long recensioneId,
+                              HttpSession session) {
+        aggiungiDatiSessione(model, session);
         
         // ================= CASO 1: DETTAGLIO DI TUTTE LE RECENSIONI DI UN'ESPERIENZA =================
         if (esperienzaId != null) {
@@ -165,11 +175,72 @@ public String contattaci(){
         }
         
         model.addAttribute("esperienze", esperienzeVisualizzate);
+        model.addAttribute("tutteEsperienze", iterableToList(manteneraEsperienzaRepository.findAll()));
         model.addAttribute("categorieMappa", categoriePerEsperienza);
         model.addAttribute("mediaValutazioni", mediaValutazioni);
         model.addAttribute("totaleRecensioni", totaleRecensioni);
         model.addAttribute("ultimeRecensioni", ultimaRecensionePerEsp);
         
         return "reviews"; // Deve corrispondere ESATTAMENTE al nome del file .html senza estensione
+    }
+
+    @PostMapping("/reviews/nuova")
+    public String creaRecensione(@RequestParam Long esperienzaId,
+                                 @RequestParam Integer valutazione,
+                                 @RequestParam String contenuto,
+                                 HttpSession session,
+                                 RedirectAttributes redirectAttributes) {
+        Long utenteId = (Long) session.getAttribute("utenteId");
+        if (utenteId == null) {
+            redirectAttributes.addFlashAttribute("erroreReviews", "Accedi per pubblicare una recensione.");
+            return "redirect:/login";
+        }
+
+        Utente utente = utenteRepository.findById(utenteId).orElse(null);
+        Esperienza esperienza = manteneraEsperienzaRepository.findById(esperienzaId).orElse(null);
+
+        if (utente == null) {
+            session.invalidate();
+            redirectAttributes.addFlashAttribute("errore", "Sessione non valida. Effettua di nuovo l'accesso.");
+            return "redirect:/login";
+        }
+
+        if (esperienza == null) {
+            redirectAttributes.addFlashAttribute("erroreReviews", "Esperienza non trovata.");
+            return "redirect:/reviews";
+        }
+
+        String testo = contenuto == null ? "" : contenuto.trim();
+        if (testo.isBlank()) {
+            redirectAttributes.addFlashAttribute("erroreReviews", "Scrivi un testo prima di pubblicare la recensione.");
+            return "redirect:/reviews";
+        }
+
+        Recensione recensione = new Recensione();
+        recensione.setUtente(utente);
+        recensione.setEsperienza(esperienza);
+        recensione.setData(LocalDate.now());
+        recensione.setValutazione(Math.max(1, Math.min(5, valutazione)));
+        recensione.setContenuto(testo);
+        recensione.setLunghezzaContenuto(testo.length());
+
+        recensioneRepository.save(recensione);
+        redirectAttributes.addFlashAttribute("successoReviews", "Recensione pubblicata correttamente.");
+
+        return "redirect:/reviews";
+    }
+
+    private void aggiungiDatiSessione(Model model, HttpSession session) {
+        Long utenteId = (Long) session.getAttribute("utenteId");
+        Boolean isAdmin = (Boolean) session.getAttribute("isAdmin");
+
+        model.addAttribute("utenteLoggato", utenteId != null);
+        model.addAttribute("accountUrl", utenteId == null ? "/login" : Boolean.TRUE.equals(isAdmin) ? "/staff" : "/dashboard");
+    }
+
+    private List<Esperienza> iterableToList(Iterable<Esperienza> esperienze) {
+        List<Esperienza> risultato = new ArrayList<>();
+        esperienze.forEach(risultato::add);
+        return risultato;
     }
 }

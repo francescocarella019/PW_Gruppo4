@@ -24,8 +24,9 @@
 
         <ul class="nav-menu">
             <li><a th:href="@{/}" class="nav-link"><i class="fa-solid fa-house"></i> Home</a></li>
-            <li><a th:href="@{/reviews}" class="nav-link"><i class="fa-regular fa-star"></i> Reviews</a></li>
+            <li><a href="#reviews" class="nav-link"><i class="fa-regular fa-star"></i> Reviews</a></li>
             <li><a th:href="@{/dashboard}" class="nav-link active"><i class="fa-regular fa-user"></i> Profile</a></li>
+            <li><a th:href="@{/logout}" class="nav-link logout-link"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
         </ul>
     </aside>
 
@@ -88,6 +89,64 @@
             </div>
 
         </div>
+
+        <section id="reviews" class="reviews-section">
+            <div class="section-heading">
+                <div>
+                    <p class="section-kicker">Reviews</p>
+                    <h2>Le tue recensioni</h2>
+                </div>
+            </div>
+
+            <div class="alert success" th:if="${successoDashboard}" th:text="${successoDashboard}"></div>
+            <div class="alert error" th:if="${erroreDashboard}" th:text="${erroreDashboard}"></div>
+
+            <div th:if="${#lists.isEmpty(recensioniUtente)}" class="empty-state">
+                <h3>Non hai ancora scritto recensioni.</h3>
+                <a th:href="@{/reviews}" class="btn btn-primary">Guarda le esperienze</a>
+            </div>
+
+            <div class="reviews-list" th:if="${not #lists.isEmpty(recensioniUtente)}">
+                <article class="review-card" th:each="recensione : ${recensioniUtente}">
+                    <div class="review-header">
+                        <div>
+                            <p class="card-category"
+                               th:text="${recensione.esperienza != null ? recensione.esperienza.titolo : 'Esperienza'}">
+                                Esperienza
+                            </p>
+                            <div class="review-meta">
+                                <span th:if="${recensione.data != null}" th:text="${#temporals.format(recensione.data, 'dd/MM/yyyy')}">Data</span>
+                                <span th:if="${recensione.data == null}">Data non disponibile</span>
+                            </div>
+                        </div>
+                        <a th:if="${recensione.esperienza != null}"
+                           th:href="@{/reviews(esperienzaId=${recensione.esperienza.id})}"
+                           class="btn btn-outline">Guarda</a>
+                    </div>
+
+                    <form th:action="@{/dashboard/recensioni/{id}(id=${recensione.id})}" method="post" class="review-form">
+                        <label>
+                            Valutazione
+                            <select name="valutazione" required>
+                                <option th:each="voto : ${#numbers.sequence(1, 5)}"
+                                        th:value="${voto}"
+                                        th:selected="${recensione.valutazione == voto}"
+                                        th:text="${voto} + ' stelle'">5 stelle</option>
+                            </select>
+                        </label>
+
+                        <label>
+                            Contenuto
+                            <textarea name="contenuto" rows="4" maxlength="2000" required th:text="${recensione.contenuto}"></textarea>
+                        </label>
+
+                        <div class="review-actions">
+                            <button type="submit" class="btn btn-primary">Salva modifiche</button>
+                        </div>
+                    </form>
+                </article>
+            </div>
+        </section>
     </main>
 
 </body>
