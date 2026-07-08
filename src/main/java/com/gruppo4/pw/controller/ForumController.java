@@ -45,7 +45,7 @@ public String chiSiamo() {
 public String contattaci(){
     return "contattaci"; // Deve corrispondere ESATTAMENTE al nome del file .html senza estensione
 }
-    @GetMapping("/reviews")
+    @GetMapping("/")
     public String mostraForum(Model model, 
                               @RequestParam(required = false) Long categoriaId,
                               @RequestParam(required = false) Long esperienzaId,
@@ -170,6 +170,6 @@ public String contattaci(){
         model.addAttribute("totaleRecensioni", totaleRecensioni);
         model.addAttribute("ultimeRecensioni", ultimaRecensionePerEsp);
         
-        return "reviews";
+        return "reviews"; // Deve corrispondere ESATTAMENTE al nome del file .html senza estensione
     }
 }
