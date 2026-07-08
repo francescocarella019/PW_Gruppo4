@@ -7,20 +7,82 @@
 
     <link rel="stylesheet" th:href="@{/css/authpage.css}">
     <script th:src="@{/js/authpage.js}" defer></script>
+    
+    <style>
+        .login-redirect {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+        .login-redirect a {
+            color: #0284c7;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .login-redirect a:hover {
+            text-decoration: underline;
+        }
 
+        /* STILE CSS PURO PER IL BOTTONE HOME (Senza Tailwind per non allargare il form) */
+        .home-btn-container {
+            position: fixed;
+            top: 24px;
+            left: 24px;
+            z-index: 50;
+        }
+        .home-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            background-color: #ffffff;
+            border: 1px solid rgba(241, 245, 249, 0.8);
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: all 0.3s ease-out;
+        }
+        .home-btn:hover {
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+        .home-btn svg {
+            width: 20px;
+            height: 20px;
+            stroke: #1e293b;
+            transition: transform 0.3s ease-in-out;
+        }
+        .home-btn:hover svg {
+            stroke: #0284c7;
+            transform: translateX(-4px) scale(1.05);
+        }
+    </style>
 </head>
 <body>
+    
+    <!-- BOTTONE FISSO IN CSS PURO -->
+    <div class="home-btn-container">
+        <a th:href="@{/}" class="home-btn" title="Torna alla Home">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+            </svg>
+        </a>
+    </div>
+
     <header>
         <nav>
 
         </nav>
     </header>
+    
     <main class="main-auth">
 
         <div class="auth-container">
             <form th:action="@{/register}" th:object="${utente}" method="POST">
                 <h1 class="brand-title">Pugliamare</h1>
                 <p class="subtitle">Benvenuto! Crea un nuovo account.</p>
+                
                 <!--Prima parte: Info basiche per fare il login-->
                 <div class="form-group">
                     <label for="username">Email</label>
@@ -38,10 +100,14 @@
                     <label for="informazioni-personali">Informazioni personali</label>
                     <input type="text" th:field="*{nome}" placeholder="Inserisci nome">
                     <input type="text" th:field="*{cognome}" placeholder="Inserisci cognome" required>
-                    <input  type="date" th:field="*{dataNascita}"placeholder="Inserisci la tua data di nascità" required>
+                    <input type="date" th:field="*{dataNascita}" placeholder="Inserisci la tua data di nascita" required>
                 </div>
 
                 <button type="submit" class="btn-primary">Registrati &rarr;</button>
+                
+                <p class="login-redirect">
+                    Hai già un account? <a th:href="@{/login}">Accedi</a>
+                </p>
             </form>
         </div>
 

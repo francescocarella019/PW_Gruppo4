@@ -1,22 +1,51 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accedi</title>
+    <title>Pugliamare - Accedi</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" th:href="@{/css/authpage.css}">
+    <script th:src="@{/js/authpage.js}" defer></script>
 </head>
 
 <body>
-    <nav>
 
-    </nav>
-    <main>
+    <!-- BOTTONE FISSO IN ALTO A SINISTRA (NON SPOSTA IL FORM, NON SI COLOA DI LATO) -->
+    <div class="fixed top-6 left-6 z-50">
+        <a th:href="@{/}"
+            class="flex items-center justify-center w-12 h-12 bg-white text-slate-800 hover:text-sky-600 rounded-full shadow-[0_4px_12px_rgba(0,0,0,0.08)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.15)] border border-slate-100 transition-shadow duration-300 ease-out group"
+            title="Torna alla Home">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2"
+                stroke="currentColor"
+                class="w-5 h-5 transform group-hover:-translate-x-1 group-hover:scale-105 transition-transform duration-300 ease-in-out">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+            </svg>
+        </a>
+    </div>
+
+    <header>
+        <nav>
+            <!-- Navbar coerente con la registrazione -->
+        </nav>
+    </header>
+
+    <!-- Ripristinato il tag main originale senza classi di allineamento forzate che spostavano il form -->
+    <main class="main-auth">
+
         <div class="auth-container">
             <form th:action="@{/login}" method="POST">
+
                 <h1 class="brand-title">Pugliamare</h1>
-                <p class="subtitle">Bentornato. Accedi per continuare.</p>
+                <p class="subtitle">Bentornato! Accedi per continuare.</p>
+
+                <div th:if="${param.error}"
+                    style="color: #b91c1c; background-color: #fef2f2; border: 1px solid #fee2e2; padding: 10px; border-radius: 8px; text-align: center; font-size: 13px; margin-bottom: 15px; font-weight: bold;">
+                    Email o password errate.
+                </div>
 
                 <div class="alert-error" th:if="${errore}" th:text="${errore}"></div>
 
@@ -25,29 +54,32 @@
                     <input type="email" id="email" name="email" placeholder="tuo@indirizzo.com" required>
                 </div>
 
+                <!-- Campo Password -->
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password" placeholder="password" required>
+                    <input type="password" id="password" name="password"
+                        placeholder="&#x1F512;&#xFE0E; Inserisci password" required>
                 </div>
 
-                <div class="forgot-password-container">
-                    <a href="#" class="forgot-password">Password dimenticata?</a>
-                </div>
-
+                <!-- Pulsante di Login -->
                 <button type="submit" class="btn-primary">Accedi &rarr;</button>
 
-                <div class="divider">
-                    <span>oppure</span>
+                <!-- Link alternativo per andare alla registrazione -->
+                <div style="text-align: center; margin-top: 20px; font-size: 13px; color: #64748b;">
+                    Non hai ancora un account?
+                    <a th:href="@{/register}"
+                        style="color: #0369a1; font-weight: bold; text-decoration: none; margin-left: 5px;">Registrati</a>
                 </div>
 
-                <a th:href="@{/register}" class="btn-secondary">Registrati</a>
             </form>
         </div>
 
     </main>
-    <footer>
 
+    <footer>
+        <!-- Footer coerente con la registrazione -->
     </footer>
 </body>
+
 
 </html>
