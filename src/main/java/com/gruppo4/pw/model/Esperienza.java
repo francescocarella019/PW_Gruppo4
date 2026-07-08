@@ -27,6 +27,9 @@ public class Esperienza {
     @Column(name = "is_disponibile")
     private Boolean isDisponibile;
 
+    @Column(name = "image_url")
+    private String imageUrl;
+
     @ManyToOne
     @JoinColumn(name = "id_luogo")
     private Luogo luogo;

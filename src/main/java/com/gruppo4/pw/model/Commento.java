@@ -29,6 +29,10 @@ public class Commento {
     @Column(name = "id_utente")
     private Long idUtente;
 
+    @ManyToOne
+    @JoinColumn(name = "id_utente", insertable = false, updatable = false)
+    private Utente utente;
+
     @Column(name = "data_commento")
     private LocalDate dataCommento;
 

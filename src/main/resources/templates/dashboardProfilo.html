@@ -12,9 +12,9 @@
 <body>
 
     <aside class="sidebar">
-        <div class="logo">
-            <i class="fa-solid fa-water"></i> Pugliamare
-        </div>
+        <a th:href="@{/}" class="logo">
+            <img th:src="@{/images/pugliamare.jpg}" alt="Pugliamare Logo">
+        </a>
 
         <div class="user-profile">
             <div class="avatar" th:text="${inizialeUtente}">U</div>
@@ -52,7 +52,11 @@
                         <i class="fa-regular fa-calendar"></i> Acquistata
                     </span>
 
-                    <div class="experience-cover">
+                    <img th:if="${acquisto.esperienza.imageUrl != null}"
+                         th:src="${acquisto.esperienza.imageUrl}"
+                         th:alt="${acquisto.esperienza.titolo}"
+                         class="experience-image">
+                    <div th:if="${acquisto.esperienza.imageUrl == null}" class="experience-cover">
                         <i class="fa-solid fa-water"></i>
                     </div>
                 </div>

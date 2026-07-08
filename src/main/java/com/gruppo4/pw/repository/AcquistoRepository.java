@@ -8,4 +8,6 @@ import com.gruppo4.pw.model.Acquisto;
 
 public interface AcquistoRepository extends CrudRepository<Acquisto, Long> {
     List<Acquisto> findByUtenteIdOrderByDataAcquistoDesc(Long utenteId);
+
+    boolean existsByUtenteIdAndEsperienzaId(Long utenteId, Long esperienzaId);
 }

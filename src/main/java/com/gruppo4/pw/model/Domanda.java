@@ -29,4 +29,8 @@ public class Domanda {
     @ManyToOne
     @JoinColumn(name = "id_recensione")
     private Recensione recensione;
+
+    @ManyToOne
+    @JoinColumn(name = "id_esperienza")
+    private Esperienza esperienza;
 }

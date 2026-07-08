@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "Risposta_commento (STAFF)")
+@Table(name = "risposte_commenti")
 public class RispostaCommento {
 
     @Id
@@ -25,5 +25,9 @@ public class RispostaCommento {
     @ManyToOne
     @JoinColumn(name = "id_utente")
     private Utente utente;
+
+    @ManyToOne
+    @JoinColumn(name = "id_commento", nullable = false)
+    private Commento commento;
     
 }

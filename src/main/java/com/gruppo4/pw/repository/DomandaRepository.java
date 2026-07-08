@@ -8,4 +8,6 @@ import com.gruppo4.pw.model.Domanda;
 
 public interface DomandaRepository extends CrudRepository<Domanda, Long> {
     List<Domanda> findByRecensioneId(Long recensioneId);
+
+    List<Domanda> findByEsperienzaId(Long esperienzaId);
 }
