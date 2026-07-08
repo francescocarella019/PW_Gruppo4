@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pugliamare - Profilo</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/dashboardProfilo.css}">
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="logo">
+            <i class="fa-solid fa-water"></i> Pugliamare
+        </div>
+
+        <div class="user-profile">
+            <div class="avatar" th:text="${inizialeUtente}">U</div>
+            <h3 th:text="${utente.nome + ' ' + utente.cognome}">Mario Rossi</h3>
+            <span class="badge-verified"><i class="fa-solid fa-check-circle"></i> Viaggiatore Verificato</span>
+        </div>
+
+        <ul class="nav-menu">
+            <li><a th:href="@{/}" class="nav-link"><i class="fa-solid fa-house"></i> Home</a></li>
+            <li><a th:href="@{/reviews}" class="nav-link"><i class="fa-regular fa-star"></i> Reviews</a></li>
+            <li><a th:href="@{/dashboard}" class="nav-link active"><i class="fa-regular fa-user"></i> Profile</a></li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <h1>Le tue esperienze</h1>
+
+        <div th:if="${#lists.isEmpty(acquisti)}" class="empty-state">
+            <h3>Non hai ancora acquistato esperienze.</h3>
+            <a th:href="@{/reviews}" class="btn btn-primary">Esplora le attivita'</a>
+        </div>
+
+        <div class="cards-grid" th:if="${not #lists.isEmpty(acquisti)}">
+
+            <div class="card" th:each="acquisto : ${acquisti}">
+
+                <div class="card-img-container">
+                    <span class="status-badge completed"
+                          th:if="${acquisto.esperienza.data != null and acquisto.esperienza.data.isBefore(oggi)}">
+                        <i class="fa-solid fa-check-circle"></i> Fatta
+                    </span>
+                    <span class="status-badge scheduled"
+                          th:if="${acquisto.esperienza.data == null or not acquisto.esperienza.data.isBefore(oggi)}">
+                        <i class="fa-regular fa-calendar"></i> Acquistata
+                    </span>
+
+                    <div class="experience-cover">
+                        <i class="fa-solid fa-water"></i>
+                    </div>
+                </div>
+
+                <div class="card-content">
+                    <div>
+                        <div class="card-category"
+                             th:text="${acquisto.esperienza.luogo != null ? acquisto.esperienza.luogo.citta : 'Esperienza Pugliamare'}">
+                            Luogo
+                        </div>
+                        <h2 class="card-title" th:text="${acquisto.esperienza.titolo}">Titolo Esperienza</h2>
+
+                        <div class="card-date">
+                            <i class="fa-regular fa-calendar"></i>
+                            <span th:if="${acquisto.esperienza.data != null}"
+                                  th:text="${#temporals.format(acquisto.esperienza.data, 'dd/MM/yyyy')}">Data</span>
+                            <span th:if="${acquisto.esperienza.data == null}">Data da definire</span>
+                        </div>
+
+                        <div class="card-date">
+                            <i class="fa-solid fa-tag"></i>
+                            <span th:text="${acquisto.esperienza.prezzo != null ? 'Euro ' + acquisto.esperienza.prezzo : 'Prezzo non disponibile'}">Prezzo</span>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <span class="text-muted"
+                              th:text="${acquisto.dataAcquisto != null ? 'Acquistata il ' + #temporals.format(acquisto.dataAcquisto, 'dd/MM/yyyy HH:mm') : 'Acquisto registrato'}">
+                            Acquisto
+                        </span>
+                        <a th:href="@{/reviews(esperienzaId=${acquisto.esperienza.id})}" class="btn btn-outline">Recensioni</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+</body>
+</html>

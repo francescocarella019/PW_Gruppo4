@@ -38,6 +38,19 @@ body {
     margin: 0 0 32px 0;
 }
 
+.alert-error {
+    background-color: #fff1f2;
+    border: 1px solid #fecdd3;
+    color: #be123c;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+    margin: -12px 0 22px;
+    padding: 12px 14px;
+    text-align: left;
+}
+
 /* Campi del Form */
 .form-group {
     text-align: left;
